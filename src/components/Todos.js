@@ -4,71 +4,77 @@ class Todos extends Component{
 	constructor(props){
 	super(props)
 	this.state={
-		judul: "ini judul",
-		pkl:[{
-			name: 'elsa'
+		todos:[{
+			task: 'makan'
 		}],
-		nama:"",
+		task: "",
 		isEdit: false,
 		index: ""
 	}
 }
-	gantiJudul(){
+
+	tambahTodo(){
 		this.setState({
-			judul: "sapi"
+			todos: this.state.todos.concat({
+				task:this.state.task
+			}),
+			task: ""
 		})
 	}
 
-	tambahPkl(){
+	hapustodos(index){
+		this.state.todos.splice(index,1)
 		this.setState({
-			pkl: this.state.pkl.concat({name:this.state.nama})
+			todos: this.state.todos
 		})
 	}
 
-	hapusPkl(index){
-		this.state.pkl.splice(index,1)
-		this.setState({
-			pkl: this.state.pkl
-		})
-	}
-
-	edit(index){
+	edit(index,task){
 		this.setState({
 			isEdit: true,
-			index: index
+			index: index,
+			task: task
 		})
 	}
 
 	submitEdit(){
-		this.state.pkl[this.state.index].name = this.state.nama
+		this.state.todos[this.state.index].task = this.state.task
 		this.setState({
-			pkl: this.state.pkl
+			todos: this.state.todos
 		})
 	}
 
 	cancelEdit(){
 		this.setState({
-			isEdit: false
+			isEdit: false,
+			task: ""
 		})
 	}
 
 	render(){
 		return(
 			<div>
-				<h1>{this.state.judul}</h1>
-				<button onClick={()=>this.gantiJudul()}>ganti judul</button>
-				{(this.state.pkl.map((p,index)=>{
-					return <div> <h1>{p.name}</h1><button onClick={()=>this.hapusPkl(index)}>delete</button> 
-								<button onClick={()=> this.edit(index)}>edit</button></div> 
+				{(this.state.todos.map((todo,index)=>{
+					return <div>
+									<h3>{todo.task}</h3><button onClick={()=>this.hapustodos(index)}>delete</button>
+									<button onClick={()=> this.edit(index,todo.task)}>edit</button>
+								 </div>
 				}))}
-				<h3>nama pkl </h3>
+				<br />
 				{(this.state.isEdit === true)
-				?<div><input placeholder="ini kolom edit" type="text" value={this.state.nama} onChange={(e)=>this.setState({nama:e.target.value})}/>
-				      <button onClick={()=> this.submitEdit()}>submit</button>
-				      <button onClick={()=> this.cancelEdit()}>Cancel</button></div>
-				:<div>{this.state.nama}<br />
-				<input placeholder="ini kolom add" type='text' onChange={(e)=>this.setState({nama:e.target.value})}/>
-				<button onClick={()=>this.tambahPkl()}>tambah</button></div>
+				?<div>
+					<input placeholder="ini kolom edit" type="text"
+					 value={this.state.task}
+					 onChange={(e)=>this.setState({task:e.target.value})} />
+		      <button onClick={()=> this.submitEdit()}>submit</button>
+		      <button onClick={()=> this.cancelEdit()}>Cancel</button>
+				 </div>
+				:<div>
+					<br />
+					<input placeholder="tambah todo" type='text' value={this.state.task}
+					 onChange={(e)=>this.setState({task:e.target.value})} />
+					<button onClick={()=>this.tambahTodo()}>tambah</button>
+			   </div>
 			}
 			</div>
 			)
