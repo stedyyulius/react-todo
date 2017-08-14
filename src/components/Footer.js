@@ -8,8 +8,7 @@ class Footers extends Component{
 	render(){
 		return(
 			<div>
-			 <h1>ini h1 </h1>
-			 <h2> ini h2 </h2>
+			 <h3>Copyright Orori @2017</h3>
 			</div>
 			)
 	}
